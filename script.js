@@ -358,58 +358,67 @@ document.querySelectorAll(".nav-links a").forEach(link=>{
 
  });
 
-// Contact Form Handler
+// Initialize EmailJS
 emailjs.init("J-hBmjvZtRQZKSbVy");
 
-const contactForm = document.getElementById("contactForm");
+// Contact Form Handler - Send Message Function
+function sendMessage(event) {
+  event.preventDefault();
 
-if (contactForm) {
-  contactForm.addEventListener("submit", function(e) {
-    e.preventDefault();
+  console.log("sendMessage function called");
 
-    // Get form values using name attributes
-    const formData = new FormData(this);
-    const name = formData.get("name");
-    const email = formData.get("email");
-    const subject = formData.get("subject");
-    const message = formData.get("message");
+  const contactForm = document.getElementById("contactForm");
 
-    // Validate form
-    if (!name || !email || !message) {
-      alert("Please fill in all required fields!");
-      return;
-    }
+  if (!contactForm) {
+    console.error("Contact form not found!");
+    alert("Error: Contact form not found");
+    return;
+  }
 
-    // Create button reference for loading state
-    const submitBtn = this.querySelector(".sub-btn");
-    const originalText = submitBtn.textContent;
+  // Get form values using name attributes
+  const formData = new FormData(contactForm);
+  const name = formData.get("name");
+  const email = formData.get("email");
+  const subject = formData.get("subject");
+  const message = formData.get("message");
 
-    // Show loading state
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Sending...";
+  console.log("Form data:", { name, email, subject, message });
 
-    // Send email using EmailJS
-    emailjs.send("service_xgprgpt", "template_irgvpkh", {
-      from_name: name,
-      from_email: email,
-      subject: subject || "No Subject",
-      message: message,
-      reply_to: email
+  // Validate form
+  if (!name || !email || !message) {
+    alert("Please fill in all required fields!");
+    return;
+  }
+
+  // Create button reference for loading state
+  const submitBtn = contactForm.querySelector(".sub-btn");
+  const originalText = submitBtn.textContent;
+
+  // Show loading state
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Sending...";
+
+  // Send email using EmailJS
+  emailjs.send("service_bmt3u6s", "template_irgvpkh", {
+    from_name: name,
+    from_email: email,
+    subject: subject || "No Subject",
+    message: message,
+    reply_to: email
+  })
+    .then((response) => {
+      // Success
+      console.log("Email sent successfully", response);
+      alert("Message sent successfully! I'll get back to you soon.");
+      contactForm.reset();
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
     })
-      .then((response) => {
-        // Success
-        console.log("Email sent successfully", response);
-        alert("Message sent successfully! I'll get back to you soon.");
-        contactForm.reset();
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-      })
-      .catch((error) => {
-        // Error
-        console.error("Failed to send email", error);
-        alert("Failed to send message. Please try again or contact me directly at abhaylokare123@gmail.com");
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-      });
-  });
+    .catch((error) => {
+      // Error
+      console.error("Failed to send email", error);
+      alert("Failed to send message. Please try again or contact me directly at abhaylokare123@gmail.com");
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    });
 }
