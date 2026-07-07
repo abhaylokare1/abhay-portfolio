@@ -359,19 +359,20 @@ document.querySelectorAll(".nav-links a").forEach(link=>{
  });
 
 // Contact Form Handler
-emailjs.init("J-hBmjvZtRQZKSbVy"); // You'll need to add your EmailJS public key here
+emailjs.init("J-hBmjvZtRQZKSbVy");
 
-const contactForm = document.querySelector(".contact-form form");
+const contactForm = document.getElementById("contactForm");
 
 if (contactForm) {
-  contactForm.addEventListener("submit", (e) => {
+  contactForm.addEventListener("submit", function(e) {
     e.preventDefault();
 
-    // Get form values
-    const name = contactForm.querySelector("input[type='text']").value;
-    const email = contactForm.querySelector("input[type='email']").value;
-    const subject = contactForm.querySelectorAll("input[type='text']")[1].value;
-    const message = contactForm.querySelector("textarea").value;
+    // Get form values using name attributes
+    const formData = new FormData(this);
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const subject = formData.get("subject");
+    const message = formData.get("message");
 
     // Validate form
     if (!name || !email || !message) {
@@ -380,7 +381,7 @@ if (contactForm) {
     }
 
     // Create button reference for loading state
-    const submitBtn = contactForm.querySelector(".sub-btn");
+    const submitBtn = this.querySelector(".sub-btn");
     const originalText = submitBtn.textContent;
 
     // Show loading state
@@ -391,7 +392,7 @@ if (contactForm) {
     emailjs.send("service_xgprgpt", "template_irgvpkh", {
       from_name: name,
       from_email: email,
-      subject: subject,
+      subject: subject || "No Subject",
       message: message,
       reply_to: email
     })
