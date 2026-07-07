@@ -53,6 +53,16 @@
 
     <link rel="stylesheet"
           href="style.css">
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+        (function(){
+            emailjs.init({
+                publicKey: "J-hBmjvZtRQZKSbVy",
+            });
+        })();
+    </script>
 
 </head>
 
@@ -575,7 +585,7 @@ const developer = {
 
                     <textarea rows="7" placeholder="Write your message..." required></textarea>
 
-                    <button class="sub-btn" type="submit">Send Message</button>
+                    <button class="sub-btn" type="submit" onclick="sendEmail()">Send Message</button>
 
                 </form>
 
@@ -664,6 +674,7 @@ const developer = {
 <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js"></script>
 <script src="script.js"></script>
 
 </body>

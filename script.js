@@ -348,12 +348,67 @@ menuBtn.addEventListener("click",()=>{
 
 document.querySelectorAll(".nav-links a").forEach(link=>{
 
-  link.addEventListener("click",()=>{
+   link.addEventListener("click",()=>{
 
-    navLinks.classList.remove("active");
-    menuIcon.classList.remove("fa-xmark");
-    menuIcon.classList.add("fa-bars");
+     navLinks.classList.remove("active");
+     menuIcon.classList.remove("fa-xmark");
+     menuIcon.classList.add("fa-bars");
 
+   });
+
+ });
+
+// Contact Form Handler
+emailjs.init("J-hBmjvZtRQZKSbVy"); // You'll need to add your EmailJS public key here
+
+const contactForm = document.querySelector(".contact-form form");
+
+if (contactForm) {
+  contactForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // Get form values
+    const name = contactForm.querySelector("input[type='text']").value;
+    const email = contactForm.querySelector("input[type='email']").value;
+    const subject = contactForm.querySelectorAll("input[type='text']")[1].value;
+    const message = contactForm.querySelector("textarea").value;
+
+    // Validate form
+    if (!name || !email || !message) {
+      alert("Please fill in all required fields!");
+      return;
+    }
+
+    // Create button reference for loading state
+    const submitBtn = contactForm.querySelector(".sub-btn");
+    const originalText = submitBtn.textContent;
+
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
+
+    // Send email using EmailJS
+    emailjs.send("service_xgprgpt", "template_irgvpkh", {
+      from_name: name,
+      from_email: email,
+      subject: subject,
+      message: message,
+      reply_to: email
+    })
+      .then((response) => {
+        // Success
+        console.log("Email sent successfully", response);
+        alert("Message sent successfully! I'll get back to you soon.");
+        contactForm.reset();
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      })
+      .catch((error) => {
+        // Error
+        console.error("Failed to send email", error);
+        alert("Failed to send message. Please try again or contact me directly at abhaylokare123@gmail.com");
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      });
   });
-
-});
+}
